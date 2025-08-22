@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mariam Chaker - Graphic Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles with new color scheme */
+        :root {
+            --primary-color: #7096D1;        /* New primary color */
+            --primary-hover: #5E83C1;        /* Slightly darker for hover states */
+            --primary-dark: #4D70B1;         /* Even darker for active states */
+            --text-on-primary: #FFFFFF;      /* White text on primary color */
+        }
+        
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+        .modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .modal-content {
+            transition: transform 0.3s ease;
+            transform: scale(0.9);
+        }
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal.open .modal-content {
+            transform: scale(1);
+        }
+        .design-scroll {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .mobile-menu {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: translateY(-10px);
+            opacity: 0;
+            visibility: hidden;
+        }
+        .mobile-menu.open {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Iframe container styling */
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+        
+        /* Hide scrollbars for the iframe */
+        .behance-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            transform: scale(1.02); /* Slight zoom to hide edges */
+            transform-origin: 0 0;
+        }
+        
+        /* Fallback for mobile */
+        @media (max-width: 768px) {
+            .iframe-container {
+                height: 400px;
+            }
+        }
+        
+        /* Enhanced visibility for primary color elements */
+        .text-primary {
+            color: var(--primary-color);
+        }
+        
+        .bg-primary {
+            background-color: var(--primary-color);
+        }
+        
+        .border-primary {
+            border-color: var(--primary-color);
+        }
+        
+        .hover-bg-primary:hover {
+            background-color: var(--primary-hover);
+        }
+        
+        .hover-border-primary:hover {
+            border-color: var(--primary-hover);
+            background-color: var(--primary-color);
+            color: var(--text-on-primary);
+        }
+        
+        .social-icon {
+            text-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+        }
+        
+        .skill-tag:hover {
+            box-shadow: 0 0 5px rgba(112, 150, 209, 0.5);
+        }
+        
+        /* Navigation link enhancements */
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        /* Button styling with new color */
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--text-on-primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.4);
+        }
+        
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            box-shadow: 0 0 5px rgba(112, 150, 209, 0.7);
+            background-color: var(--primary-color);
+            color: var(--text-on-primary);
+        }
+        
+        /* New footer styles */
+        .footer-wave {
+            position: absolute;
+            top: -1px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        
+        .footer-wave svg {
+            position: relative;
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 40px;
+        }
+        
+        .footer-wave .shape-fill {
+            fill: #F3F4F6; /* Matching the contact section bg-gray-100 */
+        }
+        
+        /* Wave animation */
+        @keyframes waveAnimation {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-15px); }
+            100% { transform: translateX(0); }
+        }
+        
+        .footer-wave {
+            animation: waveAnimation 8s ease-in-out infinite;
+        }
+        
+        /* Subtle fade-in animation for the footer content */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .footer-content {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        /* Hover effect for social icons */
+        .social-icon {
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-3px);
+        }
+        
+        /* Footer gradient background */
+        .footer-gradient {
+            background: linear-gradient(to right, #e6f0ff, #d9e6ff);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-20">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold text-primary">Mariam Chaker</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link hover:text-primary transition-colors">Home</a>
+                <a href="#projects" class="nav-link hover:text-primary transition-colors">Projects</a>
+                <a href="#about" class="nav-link hover:text-primary transition-colors">About</a>
+                <a href="#contact" class="nav-link hover:text-primary transition-colors">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-primary">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden bg-white py-4 px-4 shadow-lg absolute left-0 right-0 top-full">
+            <div class="flex flex-col space-y-3">
+                <a href="#home" class="hover:text-primary py-2 transition-colors">Home</a>
+                <a href="#projects" class="hover:text-primary py-2 transition-colors">Projects</a>
+                <a href="#about" class="hover:text-primary py-2 transition-colors">About</a>
+                <a href="#contact" class="hover:text-primary py-2 transition-colors">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="pt-24 pb-16 px-4 md:pt-32 md:pb-24">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-6 md:mb-0">
+                    <div class="flex flex-col md:block">
+                        <div class="flex justify-center md:justify-start mb-4 md:mb-0">
+                            <!-- Mobile image (centered above text on mobile) -->
+                            <img src="./imgs/happyMC.png" alt="Mariam Chaker" 
+                                class="w-32 h-32 md:hidden object-contain transition-all duration-500 transform hover:scale-105">
+                        </div>
+                        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-center md:text-left">Hi, I'm <span class="text-primary">Mariam Chaker</span></h1>
+                        <h2 class="text-2xl md:text-3xl mb-6 text-center md:text-left">Graphic Designer</h2>
+                    </div>
+                    <p class="text-lg mb-8 text-center md:text-left">Passionate about blending creativity with clarity making ideas come to life.</p>
+                    <div class="text-center md:text-left">
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                            <a href="#projects" class="btn-primary px-6 py-3 rounded-lg hover-bg-primary transition inline-block text-center font-medium">
+                                View My Work
+                            </a>
+                            <a href="./cv/Maram-Chaker-cv.pdf" download class="btn-outline-primary px-6 py-3 rounded-lg transition inline-block text-center hover-border-primary font-medium">
+                                Download CV
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center mt-6 md:mt-0">
+                    <!-- Desktop image (hidden on mobile) -->
+                    <img src="./imgs/happyMC.png" alt="Mariam Chaker - Graphic Designer" 
+                        class="hidden md:block w-80 h-80 object-contain transition-all duration-500 transform hover:scale-105">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-16 px-4 bg-gray-100">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl font-bold text-center mb-4">My Projects</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Here are some of my recent design works. Click on any project to view more details.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Behance Project Card -->
+                <div class="project-card bg-white rounded-lg overflow-hidden shadow-md cursor-pointer" data-project="behance">
+                    <!-- Cover photo for the project -->
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('./imgs/thegoodbakery.png')">
+                        <div class="w-full h-full bg-black bg-opacity-30 flex items-center justify-center"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">The Good Bakery</h3>
+                        <p class="text-gray-600">Brand identity project showcased on Behance</p>
+                        <div class="mt-3 flex items-center text-primary">
+                            <i class="fab fa-behance mr-2"></i>
+                            <span>View Project</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cookbook Project Card -->
+                <div class="project-card bg-white rounded-lg overflow-hidden shadow-md cursor-pointer" data-project="book">
+                    <!-- Cover photo for the project -->
+                    <div class="h-48 bg-cover bg-center" style="background-image: url('./imgs/cookbook.png')">
+                        <div class="w-full h-full bg-black bg-opacity-30 flex items-center justify-center"></div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Editorial Design</h3>
+                        <p class="text-gray-600">Editorial travel and food magazine showcased on Behance</p>
+                        <div class="mt-3 flex items-center text-primary">
+                            <i class="fab fa-behance mr-2"></i>
+                            <span>View Project</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 px-4">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-3xl font-bold text-center mb-4">About Me</h2>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/3 mb-6 md:mb-0 flex justify-center">
+                    <!-- Image with responsive sizing and animation -->
+                    <img src="./imgs/MC.png" alt="Mariam Chaker - Graphic Designer" 
+                        class="w-48 h-48 md:w-64 md:h-64 object-contain transition-all duration-500 transform hover:scale-105">
+                </div>
+                <div class="md:w-2/3 md:pl-12">
+                    <p class="text-lg mb-4 text-center md:text-left">Creative and detail-oriented graphic designer with a strong foundation in branding, illustration, and digital design.</p>
+                    <p class="text-lg mb-4 text-center md:text-left">Skilled in Adobe Creative Suite, Figma, and user-centered visual solutions. Passionate about creating engaging, functional, and aesthetically balanced designs.</p>
+                    <p class="text-lg text-center md:text-left">Eager to grow within collaborative design environments and tackle real-world challenges through visual storytelling.</p>
+
+                    <div class="mt-8 text-center md:text-left">
+                        <h3 class="text-xl font-bold mb-3">Skills & Expertise</h3>
+                        <div class="flex flex-wrap gap-2 justify-center md:justify-start">
+                            <span class="bg-gray-200 px-3 py-1 rounded-full text-sm transition-all duration-300 skill-tag">Branding</span>
+                            <span class="bg-gray-200 px-3 py-1 rounded-full text-sm transition-all duration-300 skill-tag">Editorial design</span>
+                            <span class="bg-gray-200 px-3 py-1 rounded-full text-sm transition-all duration-300 skill-tag">Packaging</span>
+                            <span class="bg-gray-200 px-3 py-1 rounded-full text-sm transition-all duration-300 skill-tag">UI/UX Design</span>
+                            <span class="bg-gray-200 px-3 py-1 rounded-full text-sm transition-all duration-300 skill-tag">Illustration</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-4 bg-gray-100">
+        <div class="container mx-auto max-w-4xl">
+            <h2 class="text-3xl font-bold text-center mb-4">Get In Touch</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Have a project in mind or want to discuss design possibilities? I'd love to hear from you.</p>
+            
+            <div class="flex flex-col">
+                <!-- Let's Talk Button -->
+                <div class="w-full flex justify-center mb-8">
+                    <a href="mailto:mariamchaker16@gmail.com" class="btn-primary px-8 py-4 rounded-lg hover:bg-primary-dark transition font-medium text-lg text-center">
+                        Let's Talk
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer with reduced height -->
+    <footer class="relative footer-gradient pt-12 pb-6 px-4">
+        <!-- Wave separator with animation -->
+        <div class="footer-wave">
+            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="shape-fill"></path>
+            </svg>
+        </div>
+        
+        <div class="container mx-auto max-w-6xl footer-content">
+            <!-- Compact layout -->
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-start">
+                <div class="mb-4 md:mb-0 text-center md:text-left">
+                    <h3 class="text-xl font-bold text-primary mb-1">Mariam Chaker</h3>
+                    <p class="text-gray-600">Graphic Designer</p>
+                </div>
+                
+                <div class="flex space-x-6 mb-4 md:mb-0">
+                    <a href="https://www.behance.net/mariamchaker" target="_blank" class="social-icon text-primary hover:text-primary-dark transition-colors">
+                        <i class="fab fa-behance text-2xl"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/mariam-chaker?trk=contact-info" class="social-icon text-primary hover:text-primary-dark transition-colors">
+                        <i class="fab fa-linkedin text-2xl"></i>
+                    </a>
+                    <a href="mailto:mariamchaker16@gmail.com" class="social-icon text-primary hover:text-primary-dark transition-colors">
+                        <i class="fas fa-envelope text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 mt-6 pt-6 text-center">
+                <p class="text-gray-600">&copy; All rights reserved.</p>
+                <p class="mt-2 text-gray-500 text-sm">Designed with <i class="fas fa-heart text-red-500"></i> by Layla</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Project Modals -->
+    <!-- Cookbook Modal -->
+    <div class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 opacity-0 invisible" id="modal-book">
+        <div class="modal-content bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="text-2xl font-bold">Cookbook Design</h3>
+                <button class="close-modal text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="design-scroll p-6">
+                <!-- Container for iframe with scrollbar prevention -->
+                <div class="iframe-container">
+                    <iframe src="https://www.behance.net/embed/project/225893427?ilo0=1" 
+                            allowfullscreen lazyload frameborder="0" 
+                            allow="clipboard-write" 
+                            refererPolicy="strict-origin-when-cross-origin" 
+                            class="behance-iframe">
+                    </iframe>
+                </div>
+                <div class="mt-6">
+                    <h4 class="text-xl font-bold mb-3">Project Details</h4>
+                    <p class="mb-4">This cookbook design project showcases my approach to creating visually appealing and functional recipe books. It demonstrates my skills in layout design, typography, and creating cohesive visual systems for print publications.</p>
+                    <div class="flex justify-center mt-4">
+                        <a href="https://www.behance.net/gallery/225893427/Cookbook-Design" target="_blank" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition flex items-center font-medium">
+                            <i class="fab fa-behance mr-2"></i> View on Behance
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Behance Modal -->
+    <div class="modal fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 opacity-0 invisible" id="modal-behance">
+        <div class="modal-content bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+                <h3 class="text-2xl font-bold">The Good Bakery</h3>
+                <button class="close-modal text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="design-scroll p-6">
+                <!-- Container for iframe with scrollbar prevention -->
+                <div class="iframe-container">
+                    <iframe src="https://www.behance.net/embed/project/226491303?ilo0=1" 
+                            allowfullscreen lazyload frameborder="0" 
+                            allow="clipboard-write" 
+                            refererPolicy="strict-origin-when-cross-origin" 
+                            class="behance-iframe">
+                    </iframe>
+                </div>
+                <div class="mt-6">
+                    <h4 class="text-xl font-bold mb-3">Project Details</h4>
+                    <p class="mb-4">The Good Bakery brand identity project showcases my approach to creating memorable and effective visual identities for food businesses. It demonstrates my skills in logo design, packaging, and brand system development.</p>
+                    <div class="flex justify-center mt-4">
+                        <a href="https://www.behance.net/gallery/226491303/The-Good-Bakery" target="_blank" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-dark transition flex items-center font-medium">
+                            <i class="fab fa-behance mr-2"></i> View on Behance
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('open');
+            
+            // Change icon based on menu state
+            const icon = mobileMenuButton.querySelector('i');
+            if (mobileMenu.classList.contains('open')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+        
+        // Close mobile menu when clicking on a link
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                const icon = mobileMenuButton.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+        
+        // Modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const projectCards = document.querySelectorAll('.project-card');
+            const modals = document.querySelectorAll('.modal');
+            const closeButtons = document.querySelectorAll('.close-modal');
+            
+            // Open modal when project card is clicked
+            projectCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const projectId = card.getAttribute('data-project');
+                    const modal = document.getElementById(`modal-${projectId}`);
+                    if (modal) {
+                        modal.classList.add('open');
+                        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                    }
+                });
+            });
+            
+            // Close modal when close button is clicked
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = button.closest('.modal');
+                    modal.classList.remove('open');
+                    document.body.style.overflow = ''; // Re-enable scrolling
+                });
+            });
+            
+            // Close modal when clicking outside content
+            modals.forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('open');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    modals.forEach(modal => {
+                        if (modal.classList.contains('open')) {
+                            modal.classList.remove('open');
+                            document.body.style.overflow = '';
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
